@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.ApplicationCore.DTOs;
+using Store.ApplicationCore.Exceptions;
 using Store.ApplicationCore.Interfaces;
 using System.Collections.Generic;
 
@@ -25,13 +26,15 @@ namespace Store.WebApi.Controllers
         [HttpGet("{id}")]
         public ActionResult GetProductById(int id)
         {
-            var product = this.productRepository.GetProductById(id);
-            if (product != null)
+            try
             {
+                var product = this.productRepository.GetProductById(id);
                 return Ok(product);
             }
-
-            return NotFound();
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]
@@ -44,20 +47,29 @@ namespace Store.WebApi.Controllers
         [HttpPut("{id}")]
         public ActionResult Update(int id, UpdateProductRequest request)
         {
-            var product = this.productRepository.UpdateProduct(id, request);
-            if (product != null)
+            try
             {
+                var product = this.productRepository.UpdateProduct(id, request);
                 return Ok(product);
             }
-
-            return NotFound();
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            this.productRepository.DeleteProductById(id);
-            return NoContent();
+            try
+            {
+                this.productRepository.DeleteProductById(id);
+                return NoContent();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }

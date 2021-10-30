@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Store.ApplicationCore.DTOs;
 using Store.ApplicationCore.Entities;
+using Store.ApplicationCore.Exceptions;
 using Store.ApplicationCore.Interfaces;
 using Store.ApplicationCore.Utils;
 using Store.Infrastructure.Persistence.Contexts;
@@ -40,6 +41,8 @@ namespace Store.Infrastructure.Persistence.Repositories
                 this.storeContext.Products.Remove(product);
                 this.storeContext.SaveChanges();
             }
+
+            throw new NotFoundException();
         }
 
         public ProductResponse GetProductById(int productId)
@@ -50,7 +53,7 @@ namespace Store.Infrastructure.Persistence.Repositories
                 return this.mapper.Map<ProductResponse>(product);
             }
 
-            return null;
+            throw new NotFoundException();
         }
 
         public List<ProductResponse> GetProducts()
@@ -75,7 +78,7 @@ namespace Store.Infrastructure.Persistence.Repositories
                 return this.mapper.Map<ProductResponse>(product);
             }
 
-            return null;
+            throw new NotFoundException();
         }
     }
 }
