@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Store.ApplicationCore.DTOs;
 using Store.ApplicationCore.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Store.ApplicationCore.Mappings
 {
@@ -11,7 +8,24 @@ namespace Store.ApplicationCore.Mappings
     {
         public GeneralProfile()
         {
-            CreateMap<CreateProductRequest, Product>();
+            CreateMap<CreateProductRequest, Product>()
+                .ForMember(dest =>
+                    dest.Id,
+                    opt => opt.Ignore()
+                )
+                .ForMember(dest =>
+                    dest.Stock,
+                    opt => opt.Ignore()
+                )
+                .ForMember(dest =>
+                    dest.CreatedAt,
+                    opt => opt.Ignore()
+                )
+                .ForMember(dest =>
+                    dest.UpdatedAt,
+                    opt => opt.Ignore()
+                );
+
             CreateMap<Product, ProductResponse>();
         }
     }
