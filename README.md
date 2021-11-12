@@ -32,3 +32,8 @@ To run, go to src\Store.WebApi
 ```
 dotnet run
 ```
+
+To test Unit and Integration projects, go to solution folder
+```
+dotnet test
+```
