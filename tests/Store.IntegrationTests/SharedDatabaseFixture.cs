@@ -27,7 +27,7 @@ namespace Store.IntegrationTests
 
         public DbConnection Connection { get; }
 
-        public StoreContext CreateContext(DbTransaction transaction = null)
+        public StoreContext CreateContext(DbTransaction? transaction = null)
         {
             var context = new StoreContext(new DbContextOptionsBuilder<StoreContext>().UseSqlite(Connection).Options);
 
