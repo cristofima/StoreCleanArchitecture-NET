@@ -41,8 +41,10 @@ namespace Store.Infrastructure.Persistence.Repositories
                 this.storeContext.Products.Remove(product);
                 this.storeContext.SaveChanges();
             }
-
-            throw new NotFoundException();
+            else
+            {
+                throw new NotFoundException();
+            }
         }
 
         public ProductResponse GetProductById(int productId)
