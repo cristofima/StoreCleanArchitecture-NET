@@ -19,6 +19,16 @@ namespace Store.Infrastructure
 
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            var serviceProvider = services.BuildServiceProvider();
+            try
+            {
+                var dbContext = serviceProvider.GetRequiredService<StoreContext>();
+                dbContext.Database.Migrate();
+            }
+            catch
+            {
+            }
+
             return services;
         }
     }
