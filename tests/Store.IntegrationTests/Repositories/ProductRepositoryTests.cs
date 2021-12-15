@@ -155,7 +155,6 @@ namespace Store.IntegrationTests.Repositories
                 using (var context = Fixture.CreateContext(transaction))
                 {
                     var repository = new ProductRepository(context, _mapper);
-                    var products = repository.GetProducts();
 
                     repository.DeleteProductById(productId);
                 }
