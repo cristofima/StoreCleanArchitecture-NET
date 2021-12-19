@@ -2,7 +2,6 @@
 using Store.ApplicationCore.DTOs;
 using Store.ApplicationCore.Entities;
 using Store.ApplicationCore.Mappings;
-using Store.ApplicationCore.Utils;
 using System;
 using System.Runtime.Serialization;
 using Xunit;
@@ -33,6 +32,7 @@ namespace Store.UnitTests.Mappings
         [Theory]
         [InlineData(typeof(CreateProductRequest), typeof(Product))]
         [InlineData(typeof(Product), typeof(ProductResponse))]
+        [InlineData(typeof(Product), typeof(SingleProductResponse))]
         public void Map_SourceToDestination_ExistConfiguration(Type origin, Type destination)
         {
             var instance = FormatterServices.GetUninitializedObject(origin);

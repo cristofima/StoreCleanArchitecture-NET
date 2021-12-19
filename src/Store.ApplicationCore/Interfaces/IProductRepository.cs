@@ -7,12 +7,12 @@ namespace Store.ApplicationCore.Interfaces
     {
         List<ProductResponse> GetProducts();
 
-        ProductResponse GetProductById(int productId);
+        SingleProductResponse GetProductById(int productId);
 
         void DeleteProductById(int productId);
 
-        ProductResponse CreateProduct(CreateProductRequest request);
+        SingleProductResponse CreateProduct(CreateProductRequest request);
 
-        ProductResponse UpdateProduct(int productId, UpdateProductRequest request);
+        SingleProductResponse UpdateProduct(int productId, UpdateProductRequest request);
     }
 }

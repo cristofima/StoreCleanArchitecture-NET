@@ -21,7 +21,7 @@ namespace Store.Infrastructure.Persistence.Repositories
             this.mapper = mapper;
         }
 
-        public ProductResponse CreateProduct(CreateProductRequest request)
+        public SingleProductResponse CreateProduct(CreateProductRequest request)
         {
             var product = this.mapper.Map<Product>(request);
             product.Stock = 0;
@@ -30,7 +30,7 @@ namespace Store.Infrastructure.Persistence.Repositories
             this.storeContext.Products.Add(product);
             this.storeContext.SaveChanges();
 
-            return this.mapper.Map<ProductResponse>(product);
+            return this.mapper.Map<SingleProductResponse>(product);
         }
 
         public void DeleteProductById(int productId)
@@ -47,12 +47,12 @@ namespace Store.Infrastructure.Persistence.Repositories
             }
         }
 
-        public ProductResponse GetProductById(int productId)
+        public SingleProductResponse GetProductById(int productId)
         {
             var product = this.storeContext.Products.Find(productId);
             if (product != null)
             {
-                return this.mapper.Map<ProductResponse>(product);
+                return this.mapper.Map<SingleProductResponse>(product);
             }
 
             throw new NotFoundException();
@@ -63,7 +63,7 @@ namespace Store.Infrastructure.Persistence.Repositories
             return this.storeContext.Products.Select(p => this.mapper.Map<ProductResponse>(p)).ToList();
         }
 
-        public ProductResponse UpdateProduct(int productId, UpdateProductRequest request)
+        public SingleProductResponse UpdateProduct(int productId, UpdateProductRequest request)
         {
             var product = this.storeContext.Products.Find(productId);
             if (product != null)
@@ -77,7 +77,7 @@ namespace Store.Infrastructure.Persistence.Repositories
                 this.storeContext.Products.Update(product);
                 this.storeContext.SaveChanges();
 
-                return this.mapper.Map<ProductResponse>(product);
+                return this.mapper.Map<SingleProductResponse>(product);
             }
 
             throw new NotFoundException();

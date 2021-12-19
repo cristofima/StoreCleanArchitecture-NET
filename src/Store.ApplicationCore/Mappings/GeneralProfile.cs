@@ -27,6 +27,7 @@ namespace Store.ApplicationCore.Mappings
                 );
 
             CreateMap<Product, ProductResponse>();
+            CreateMap<Product, SingleProductResponse>();
         }
     }
 }

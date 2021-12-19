@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.WebApi", "src\Store.W
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A6E8ECBB-EE1B-4FD8-B53A-877A64A02EBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.UnitTests", "tests\Store.UnitTests\Store.UnitTests.csproj", "{F6FA0C39-7C4F-4511-90D5-507D23D90044}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.UnitTests", "tests\Store.UnitTests\Store.UnitTests.csproj", "{F6FA0C39-7C4F-4511-90D5-507D23D90044}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.IntegrationTests", "tests\Store.IntegrationTests\Store.IntegrationTests.csproj", "{DA1BC996-BAB4-4FD9-A94A-E38B6181E17A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.IntegrationTests", "tests\Store.IntegrationTests\Store.IntegrationTests.csproj", "{DA1BC996-BAB4-4FD9-A94A-E38B6181E17A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.SharedDatabaseSetup", "tests\Store.SharedDatabaseSetup\Store.SharedDatabaseSetup.csproj", "{3C31AD80-0F8C-4C04-B7B3-48CE53D7E508}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{DA1BC996-BAB4-4FD9-A94A-E38B6181E17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA1BC996-BAB4-4FD9-A94A-E38B6181E17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA1BC996-BAB4-4FD9-A94A-E38B6181E17A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C31AD80-0F8C-4C04-B7B3-48CE53D7E508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C31AD80-0F8C-4C04-B7B3-48CE53D7E508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C31AD80-0F8C-4C04-B7B3-48CE53D7E508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C31AD80-0F8C-4C04-B7B3-48CE53D7E508}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{FA30AF1B-7F01-4B93-83B6-D55852259B52} = {A98E282B-3323-452D-AB43-6D5A4346924D}
 		{F6FA0C39-7C4F-4511-90D5-507D23D90044} = {A6E8ECBB-EE1B-4FD8-B53A-877A64A02EBD}
 		{DA1BC996-BAB4-4FD9-A94A-E38B6181E17A} = {A6E8ECBB-EE1B-4FD8-B53A-877A64A02EBD}
+		{3C31AD80-0F8C-4C04-B7B3-48CE53D7E508} = {A6E8ECBB-EE1B-4FD8-B53A-877A64A02EBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6F246E7-577E-42ED-9C0E-8418EDD64F77}
