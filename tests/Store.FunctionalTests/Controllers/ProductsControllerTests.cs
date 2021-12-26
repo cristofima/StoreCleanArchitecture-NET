@@ -44,7 +44,7 @@ namespace Store.FunctionalTests.Controllers
             var statusCode = response.StatusCode.ToString();
 
             Assert.Equal("OK", statusCode);
-            Assert.Equal(result.Id, productId);
+            Assert.Equal(productId, result.Id);
             Assert.NotNull(result.Name);
             Assert.True(result.Price > 0);
             Assert.True(result.Stock > 0);
@@ -98,10 +98,10 @@ namespace Store.FunctionalTests.Controllers
             var statusCode2 = response2.StatusCode.ToString();
 
             Assert.Equal("OK", statusCode2);
-            Assert.Equal(result2.Id, createdProduct.Id);
-            Assert.Equal(result2.Name, createdProduct.Name);
-            Assert.Equal(result2.Description, createdProduct.Description);
-            Assert.Equal(result2.Stock, createdProduct.Stock);
+            Assert.Equal(createdProduct.Id, result2.Id);
+            Assert.Equal(createdProduct.Name, result2.Name);
+            Assert.Equal(createdProduct.Description, result2.Description);
+            Assert.Equal(createdProduct.Stock, result2.Stock);
         }
 
         [Fact]
@@ -172,10 +172,10 @@ namespace Store.FunctionalTests.Controllers
             var statusCode2 = response2.StatusCode.ToString();
 
             Assert.Equal("OK", statusCode2);
-            Assert.Equal(result2.Id, updatedProduct.Id);
-            Assert.Equal(result2.Name, updatedProduct.Name);
-            Assert.Equal(result2.Description, updatedProduct.Description);
-            Assert.Equal(result2.Stock, updatedProduct.Stock);
+            Assert.Equal(updatedProduct.Id, result2.Id);
+            Assert.Equal(updatedProduct.Name, result2.Name);
+            Assert.Equal(updatedProduct.Description, result2.Description);
+            Assert.Equal(updatedProduct.Stock, result2.Stock);
         }
 
         [Fact]
