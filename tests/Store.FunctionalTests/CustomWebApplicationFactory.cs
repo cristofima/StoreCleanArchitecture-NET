@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Store.FunctionalTests
 {
-    public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
+    public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
