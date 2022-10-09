@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.IntegrationTests", "t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.SharedDatabaseSetup", "tests\Store.SharedDatabaseSetup\Store.SharedDatabaseSetup.csproj", "{3C31AD80-0F8C-4C04-B7B3-48CE53D7E508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.FunctionalTests", "tests\Store.FunctionalTests\Store.FunctionalTests.csproj", "{959082E4-8E59-40AC-B4B1-D2BC22235DEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.FunctionalTests", "tests\Store.FunctionalTests\Store.FunctionalTests.csproj", "{959082E4-8E59-40AC-B4B1-D2BC22235DEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

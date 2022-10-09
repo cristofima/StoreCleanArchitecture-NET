@@ -12,7 +12,7 @@ namespace Store.IntegrationTests
         private static readonly object _lock = new object();
         private static bool _databaseInitialized;
 
-        private string dbName = "IntegrationTestsDatabase.db";
+        private readonly string dbName = "IntegrationTestsDatabase.db";
 
         public SharedDatabaseFixture()
         {
