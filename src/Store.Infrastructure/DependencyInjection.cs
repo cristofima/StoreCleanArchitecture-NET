@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Store.ApplicationCore.Interfaces;
 using Store.Infrastructure.Persistence.Contexts;
-using Store.Infrastructure.Persistence.Repositories;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace Store.Infrastructure
 {
@@ -17,7 +16,7 @@ namespace Store.Infrastructure
             services.AddDbContext<StoreContext>(options =>
                options.UseSqlServer(defaultConnectionString));
 
-            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             var serviceProvider = services.BuildServiceProvider();
             try

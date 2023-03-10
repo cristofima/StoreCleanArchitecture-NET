@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Store.ApplicationCore.DTOs;
 using Store.ApplicationCore.Exceptions;
-using Store.ApplicationCore.Interfaces;
+using Store.Infrastructure.Persistence.Commands;
+using Store.Infrastructure.Persistence.Queries;
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace Store.WebApi.Controllers
 {
@@ -14,11 +17,11 @@ namespace Store.WebApi.Controllers
     [Produces("application/json")]
     public class ProductsController : Controller
     {
-        private readonly IProductRepository productRepository;
+        private readonly ISender mediator;
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(ISender mediator)
         {
-            this.productRepository = productRepository;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -27,9 +30,9 @@ namespace Store.WebApi.Controllers
         /// <response code="200">Returns the products</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductResponse>))]
-        public ActionResult GetProducts()
+        public async Task<ActionResult> GetProductsAsync()
         {
-            return Ok(this.productRepository.GetProducts());
+            return Ok(await mediator.Send(new GetAllProductsQuery()));
         }
 
         /// <summary>
@@ -41,11 +44,11 @@ namespace Store.WebApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SingleProductResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult GetProductById(int id)
+        public async Task<ActionResult> GetProductByIdAsync(int id)
         {
             try
             {
-                var product = this.productRepository.GetProductById(id);
+                var product = await mediator.Send(new GetProductByIdQuery(id));
                 return Ok(product);
             }
             catch (NotFoundException)
@@ -63,9 +66,9 @@ namespace Store.WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SingleProductResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult Create(CreateProductRequest request)
+        public async Task<ActionResult> CreateAsync(CreateProductRequest request)
         {
-            var product = this.productRepository.CreateProduct(request);
+            var product = await mediator.Send(new AddProductCommand(request));
             return StatusCode(201, product);
         }
 
@@ -81,11 +84,11 @@ namespace Store.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SingleProductResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult Update(int id, UpdateProductRequest request)
+        public async Task<ActionResult> UpdateAsync(int id, UpdateProductRequest request)
         {
             try
             {
-                var product = this.productRepository.UpdateProduct(id, request);
+                var product = await mediator.Send(new UpdateProductCommand(id, request));
                 return Ok(product);
             }
             catch (NotFoundException)
@@ -103,11 +106,11 @@ namespace Store.WebApi.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
             try
             {
-                this.productRepository.DeleteProductById(id);
+                await mediator.Send(new DeleteProductByIdCommand(id));
                 return NoContent();
             }
             catch (NotFoundException)

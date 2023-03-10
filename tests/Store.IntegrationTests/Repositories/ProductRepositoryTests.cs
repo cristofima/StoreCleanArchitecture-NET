@@ -2,7 +2,11 @@
 using Store.ApplicationCore.DTOs;
 using Store.ApplicationCore.Exceptions;
 using Store.ApplicationCore.Mappings;
-using Store.Infrastructure.Persistence.Repositories;
+using Store.Infrastructure.Persistence.Commands;
+using Store.Infrastructure.Persistence.Handlers;
+using Store.Infrastructure.Persistence.Queries;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Store.IntegrationTests.Repositories
@@ -25,32 +29,33 @@ namespace Store.IntegrationTests.Repositories
         }
 
         [Fact]
-        public void GetProducts_ReturnsAllProducts()
+        public async Task GetAllProductsHandler_ReturnsAllProducts()
         {
             using (var context = Fixture.CreateContext())
             {
-                var repository = new ProductRepository(context, _mapper);
+                var handler = new GetAllProductsHandler(context, _mapper);
 
-                var products = repository.GetProducts();
+                var products = await handler.Handle(new GetAllProductsQuery(), CancellationToken.None);
 
                 Assert.Equal(10, products.Count);
             }
         }
 
         [Fact]
-        public void GetProductById_ProductDoesntExist_ThrowsNotFoundException()
+        public async Task GetProductByIdHandler_ProductDoesntExist_ThrowsNotFoundException()
         {
             using (var context = Fixture.CreateContext())
             {
-                var repository = new ProductRepository(context, _mapper);
+                var handler = new GetProductByIdHandler(context, _mapper);
                 var productId = 56;
 
-                Assert.Throws<NotFoundException>(() => repository.GetProductById(productId));
+                var action = async () => await handler.Handle(new GetProductByIdQuery(productId), CancellationToken.None);
+                await Assert.ThrowsAsync<NotFoundException>(action);
             }
         }
 
         [Fact]
-        public void CreateProduct_SavesCorrectData()
+        public async Task AddProductHandler_SavesCorrectData()
         {
             using (var transaction = Fixture.Connection.BeginTransaction())
             {
@@ -65,17 +70,17 @@ namespace Store.IntegrationTests.Repositories
 
                 using (var context = Fixture.CreateContext(transaction))
                 {
-                    var repository = new ProductRepository(context, _mapper);
+                    var handler = new AddProductHandler(context, _mapper);
 
-                    var product = repository.CreateProduct(request);
+                    var product = await handler.Handle(new AddProductCommand(request), CancellationToken.None);
                     productId = product.Id;
                 }
 
                 using (var context = Fixture.CreateContext(transaction))
                 {
-                    var repository = new ProductRepository(context, _mapper);
+                    var handler = new GetProductByIdHandler(context, _mapper);
 
-                    var product = repository.GetProductById(productId);
+                    var product = await handler.Handle(new GetProductByIdQuery(productId), CancellationToken.None);
 
                     Assert.NotNull(product);
                     Assert.Equal(request.Name, product.Name);
@@ -87,7 +92,7 @@ namespace Store.IntegrationTests.Repositories
         }
 
         [Fact]
-        public void UpdateProduct_SavesCorrectData()
+        public async Task UpdateProductHandler_SavesCorrectData()
         {
             using (var transaction = Fixture.Connection.BeginTransaction())
             {
@@ -103,16 +108,16 @@ namespace Store.IntegrationTests.Repositories
 
                 using (var context = Fixture.CreateContext(transaction))
                 {
-                    var repository = new ProductRepository(context, _mapper);
+                    var handler = new UpdateProductHandler(context, _mapper);
 
-                    repository.UpdateProduct(productId, request);
+                    await handler.Handle(new UpdateProductCommand(productId, request), CancellationToken.None);
                 }
 
                 using (var context = Fixture.CreateContext(transaction))
                 {
-                    var repository = new ProductRepository(context, _mapper);
+                    var handler = new GetProductByIdHandler(context, _mapper);
 
-                    var product = repository.GetProductById(productId);
+                    var product = await handler.Handle(new GetProductByIdQuery(productId), CancellationToken.None);
 
                     Assert.NotNull(product);
                     Assert.Equal(request.Name, product.Name);
@@ -124,7 +129,7 @@ namespace Store.IntegrationTests.Repositories
         }
 
         [Fact]
-        public void UpdateProduct_ProductDoesntExist_ThrowsNotFoundException()
+        public async Task UpdateProductHandler_ProductDoesntExist_ThrowsNotFoundException()
         {
             var productId = 15;
 
@@ -138,15 +143,15 @@ namespace Store.IntegrationTests.Repositories
 
             using (var context = Fixture.CreateContext())
             {
-                var repository = new ProductRepository(context, _mapper);
-                var action = () => repository.UpdateProduct(productId, request);
+                var handler = new UpdateProductHandler(context, _mapper);
+                var action = async() => await handler.Handle(new UpdateProductCommand(productId, request), CancellationToken.None);
 
-                Assert.Throws<NotFoundException>(action);
+                await Assert.ThrowsAsync<NotFoundException>(action);
             }
         }
 
         [Fact]
-        public void DeleteProductById_EnsuresProductIsDeleted()
+        public async Task DeleteProductByIdHandler_EnsuresProductIsDeleted()
         {
             using (var transaction = Fixture.Connection.BeginTransaction())
             {
@@ -154,32 +159,32 @@ namespace Store.IntegrationTests.Repositories
 
                 using (var context = Fixture.CreateContext(transaction))
                 {
-                    var repository = new ProductRepository(context, _mapper);
+                    var handler = new DeleteProductByIdHandler(context);
 
-                    repository.DeleteProductById(productId);
+                    await handler.Handle(new DeleteProductByIdCommand(productId), CancellationToken.None);
                 }
 
                 using (var context = Fixture.CreateContext(transaction))
                 {
-                    var repository = new ProductRepository(context, _mapper);
-                    var action = () => repository.GetProductById(productId);
+                    var handler = new GetProductByIdHandler(context, _mapper);
+                    var action = async() => await handler.Handle(new GetProductByIdQuery(productId), CancellationToken.None);
 
-                    Assert.Throws<NotFoundException>(action);
+                    await Assert.ThrowsAsync<NotFoundException>(action);
                 }
             }
         }
 
         [Fact]
-        public void DeleteProductById_ProductDoesntExist_ThrowsNotFoundException()
+        public async Task DeleteProductByIdHandler_ProductDoesntExist_ThrowsNotFoundException()
         {
             var productId = 48;
 
             using (var context = Fixture.CreateContext())
             {
-                var repository = new ProductRepository(context, _mapper);
-                var action = () => repository.DeleteProductById(productId);
+                var handler = new DeleteProductByIdHandler(context);
+                var action = async () => await handler.Handle(new DeleteProductByIdCommand(productId), CancellationToken.None);
 
-                Assert.Throws<NotFoundException>(action);
+                await Assert.ThrowsAsync<NotFoundException>(action);
             }
         }
     }
